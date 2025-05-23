@@ -9,7 +9,18 @@ int binUDekadni(const vector<bool>& b) {
     d = 2 * d + (x ? 1 : 0);
   return d;
 }
-// rekurzvino stablo zbog kojeg radi ceo zadatak
+/* rekurzvino stablo zbog kojeg radi ceo zadatak poz 0 = 1
+                       |
+              +--------+---------+
+              |                  |
+          poz 1 = 0          poz 1 = 1
+              |                  |
+              |              +---+---+
+          poz 2 = 1      poz 2 = 0  poz 2 = 1
+              |              |         |
+           [101]           [110]     [111]
+              |
+           [102] (ovaj ne postoji jer iza 0 ne sme 0) */
 void generisi_(vector<bool>& tekuci, int poz) {
   if (poz == tekuci.size()) {
     cout << binUDekadni(tekuci) << endl;
