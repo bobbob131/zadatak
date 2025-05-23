@@ -1,27 +1,38 @@
 #include <iostream>
+#include <vector>
+
 using namespace std;
 
-// Функција која проверава да ли број има две суседне нуле у бинарном запису
-bool nemaDveNule(unsigned int x) {
-    while (x > 0) {
-        // Проверимо две последње цифре
-        if ((x & 3) == 0)  // 3 у бинарном је 11 → провера последње две цифре
-            return false;
-        x >>= 1;
-    }
-    return true;
+int binUDekadni(const vector<bool>& b) {
+  int d = 0;
+  for (bool x : b)
+    d = 2 * d + (x ? 1 : 0);
+  return d;
+}
+// rekurzvino stablo zbog kojeg radi ceo zadatak
+void generisi_(vector<bool>& tekuci, int poz) {
+  if (poz == tekuci.size()) {
+    cout << binUDekadni(tekuci) << endl;
+    return;
+  }
+  if (poz > 0 && tekuci[poz-1] != false) {
+    tekuci[poz] = false;
+    generisi_(tekuci, poz + 1);
+  }
+  tekuci[poz] = true;
+  generisi_(tekuci, poz + 1);
+}
+
+void generisi(int n) {
+  for (int brojBinCifara = 1; brojBinCifara <= n; brojBinCifara++) {
+    vector<bool> tekuci(brojBinCifara);
+    generisi_(tekuci, 0);
+  }
 }
 
 int main() {
-    int n;
-    cin >> n;
-
-    unsigned int maxBroj = (1 << n);  // 2^n
-
-    for (unsigned int i = 1; i < maxBroj; i++) {
-        if (nemaDveNule(i))
-            cout << i << endl;
-    }
-
-    return 0;
+  int n;
+  cin >> n;
+  generisi(n);
+  return 0;
 }
