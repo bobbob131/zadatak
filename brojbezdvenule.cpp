@@ -6,7 +6,7 @@ using namespace std;
 int binUDekadni(const vector<bool>& b) {
   int d = 0;
   for (bool x : b)
-    d = 2 * d + (x ? 1 : 0);
+    d = 2 * d + (x ? 1 : 0); // d se postavlja na 0 i dodaje mu se x ? 1 : 0 i d se mnozi sa dva jer se shiftuje u levo
   return d;
 }
 /* rekurzvino stablo zbog kojeg radi ceo zadatak poz 0 = 1
@@ -23,7 +23,7 @@ int binUDekadni(const vector<bool>& b) {
            [102] (ovaj ne postoji jer iza 0 ne sme 0) */
 void generisi_(vector<bool>& tekuci, int poz) {
   if (poz == tekuci.size()) {
-    cout << binUDekadni(tekuci) << endl;
+    cout << binUDekadni(tekuci) << endl; // ako je doso do kraja ispisi ga
     return;
   }
   if (poz > 0 && tekuci[poz-1] != false) {
