@@ -1,44 +1,31 @@
 #include <iostream>
-#include <vector>
-
 using namespace std;
 
-int binUDekadni(const vector<bool>& b) {
-  int d = 0;
-  for (bool x : b)
-    d = 2 * d + (x ? 1 : 0); // d se postavlja na 0 i dodaje mu se x ? 1 : 0 i d se mnozi sa dva jer se shiftuje u levo
-  return d;
-}
-/* rekurzvino stablo zbog kojeg radi ceo zadatak poz 0 = 1
-                       |
-              +--------+---------+
-              |                  |
-          poz 1 = 0          poz 1 = 1
-              |                  |
-              |              +---+---+
-          poz 2 = 1      poz 2 = 0  poz 2 = 1
-              |              |         |
-           [101]           [110]     [111]
-              |
-           [102] (ovaj ne postoji jer iza 0 ne sme 0) */
-void generisi_(vector<bool>& tekuci, int poz) {
-  if (poz == tekuci.size()) {
-    cout << binUDekadni(tekuci) << endl; // ako je doso do kraja ispisi ga
+
+void generisi_(unsigned tekuci, int preostaloCifara) {
+  
+  // Bazični slučaj: ako nema više cifara za dodavanje
+  if (preostaloCifara == 0) {
+    cout << tekuci << endl;  // ispiši broj
     return;
   }
-  if (poz > 0 && tekuci[poz-1] != false) {
-    tekuci[poz] = false;
-    generisi_(tekuci, poz + 1);
-  }
-  tekuci[poz] = true;
-  generisi_(tekuci, poz + 1);
+
+  // Ako je poslednji bit trenutnog broja 1
+  if ((tekuci & 1) != 0)
+    // Možeš da dodaš 0 na kraj broja
+    // (pomeri sve bitove ulevo za jedno mesto — dodaj 0 na kraj)
+    generisi_(tekuci << 1, preostaloCifara - 1);
+  
+  // Pomeri sve bitove ulevo i postavi poslednji bit na 1 pomoću | 1
+  generisi_((tekuci << 1) | 1, preostaloCifara - 1);
 }
 
+// Funkcija koja pokreće generisanje binarnih brojeva dužine od 1 do n
 void generisi(int n) {
-  for (int brojBinCifara = 1; brojBinCifara <= n; brojBinCifara++) {
-    vector<bool> tekuci(brojBinCifara);
-    generisi_(tekuci, 0);
-  }
+  // Za svaku dužinu od 1 do n
+  for (int brojBinCifara = 1; brojBinCifara <= n; brojBinCifara++)
+    // Pokreni rekurziju sa početnom vrednošću 0 i brojem preostalih cifara
+    generisi_(0, brojBinCifara);
 }
 
 int main() {
